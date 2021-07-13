@@ -1,0 +1,59 @@
+security:
+  config:
+    # Configuration of secured config (encryption of passwords in property files)
+    # Set to true for production - if set to true, clear text passwords will cause failure
+    require-encryption: false
+  # composite provider policy
+  provider-policy:
+    type: "COMPOSITE"
+    authentication:
+      # first resolve signature, then resolve basic-auth
+      - name: "http-signatures"
+        flag: "OPTIONAL"
+      # must be present
+      - name: "http-basic-auth"
+  providers:
+    # Signatures
+    - http-signatures:
+        # only inbound configured, no outbound calls
+        inbound:
+          keys:
+            - key-id: "service1-hmac"
+              principal-name: "Service1 - HMAC signature"
+              hmac.secret: "${CLEAR=somePasswordForHmacShouldBeEncrypted}"
+            - key-id: "service1-rsa"
+              principal-name: "Service1 - RSA signature"
+              public-key:
+                keystore:
+                  # path to keystore
+                  resource.path: "src/main/resources/keystore.p12"
+                  # Keystore type
+                  # PKCS12 or JKS
+                  # defaults to jdk default
+                  # keystore-type: "PKCS12"
+                  # password of the keystore
+                  passphrase: "password"
+                  # alias of the certificate to get public key from
+                  cert.alias: "service_cert"
+    # Security provider - basic authentication (supports roles)
+    - http-basic-auth:
+        realm: "helidon"
+        users:
+          - login: "jack"
+            password: "${CLEAR=password}"
+            roles: [ "user", "admin" ]
+          - login: "jill"
+            password: "${CLEAR=password}"
+            roles: [ "user" ]
+          - login: "john"
+            password: "${CLEAR=password}"
+            roles: []
+  web-server:
+    # Configuration of integration with web server
+    defaults:
+      authenticate: true
+    paths:
+      - path: "/service2"
+        roles-allowed: [ "user" ]
+      - path: "/service2-rsa"
+        roles-allowed: [ "user" ]
