@@ -3,6 +3,66 @@ server:
   port: 8088
   host: 0.0.0.0
 
+security:
+  config:
+    # Configuration of secured config (encryption of passwords in property files)
+    # Set to true for production - if set to true, clear text passwords will cause failure
+    require-encryption: false
+  # composite provider policy
+  provider-policy:
+    type: "COMPOSITE"
+    authentication:
+      # first resolve signature, then resolve basic-auth
+      - name: "http-signatures"
+        flag: "OPTIONAL"
+      # must be present
+      - name: "http-basic-auth"
+  providers:
+    # Signatures
+    - http-signatures:
+        # only inbound configured, no outbound calls
+        inbound:
+          keys:
+            - key-id: "service1-hmac"
+              principal-name: "Service1 - HMAC signature"
+              hmac.secret: "${CLEAR=somePasswordForHmacShouldBeEncrypted}"
+            - key-id: "service1-rsa"
+              principal-name: "Service1 - RSA signature"
+              public-key:
+                keystore:
+                  # path to keystore
+                  resource.path: "src/main/resources/keystore.p12"
+                  # Keystore type
+                  # PKCS12 or JKS
+                  # defaults to jdk default
+                  # keystore-type: "PKCS12"
+                  # password of the keystore
+                  passphrase: "password"
+                  # alias of the certificate to get public key from
+                  cert.alias: "service_cert"
+    # Security provider - basic authentication (supports roles)
+    - http-basic-auth:
+        realm: "helidon"
+        users:
+          - login: "master"
+            password: "${CLEAR=123456}"
+            roles: [ "master" ]
+  web-server:
+    # Configuration of integration with web server
+    defaults:
+      authenticate: true
+#    paths:
+#      - path: "/task"
+#        roles-allowed: [ "master", "spv", "staff" ]
+#      - path: "/role"
+#        roles-allowed: [ "master", "spv", "staff" ]
+#      - path: "/task/new/**"
+#        roles-allowed: [ "master", "spv" ]
+#      - path: "/task/verified/**"
+#        roles-allowed: [ "master", "spv" ]
+#      - path: "/task/finished/**"
+#        roles-allowed: [ "master", "staff" ]
+
 db:
   source: jdbc
   connection:
@@ -19,6 +79,8 @@ db:
   statements:
     # Ping statement
     ping: "SET @HELIDON_PING=0"
+    #PRIMARY KEY SEQUENCE
+    primary-key-seq: "CREATE SEQUENCE IF NOT EXISTS plusid START 2 INCREMENT 1"
     #CREATE ROLE
     create-role: "CREATE TABLE IF NOT EXISTS Role(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL)"
     #SELECT ALL ROLES
@@ -26,7 +88,7 @@ db:
     #SELECT ROLE BY ID
     select-role-by-id: "SELECT id, name FROM Role WHERE id = :id"
     #INSERT NEW ROLE
-    insert-role: "INSERT INTO Role(name) VALUES(?)"
+    insert-role: "INSERT INTO Role(id, name) VALUES(nextval('plusid'), ?)"
     #DELETE ROLE BY ID
     delete-role-by-id: "DELETE FROM Role WHERE id = :id"
     #DELETE ALL ROLE
@@ -35,10 +97,12 @@ db:
     create-employee: "CREATE TABLE IF NOT EXISTS Employee(id SERIAL PRIMARY KEY, username VARCHAR NOT NULL, password VARCHAR NOT NULL, role_id integer REFERENCES Role (id) ON DELETE CASCADE)"
     #SELECT ALL EMPLOYEES
     select-all-employee: "SELECT Employee.id, username, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id ORDER BY Employee.id"
+    #SELECT ALL EMPLOYEES
+    find-all-employee: "SELECT Employee.id, username, password, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id ORDER BY Employee.id"
     #SELECT EMPLOYEE BY ID
     select-employee-by-id: "SELECT Employee.id, username, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id WHERE Employee.id = :id"
     #INSERT NEW EMPLOYEE
-    insert-employee: "INSERT INTO Employee(username, password, role_id) VALUES(?,?,?)"
+    insert-employee: "INSERT INTO Employee(id, username, password, role_id) VALUES(nextval('plusid'),?,?,?)"
     #DELETE EMPLOYEE BY ID
     delete-employee-by-id: "DELETE FROM Employee WHERE id = :id"
     #DELETE ALL EMPLOYEE
@@ -59,6 +123,6 @@ db:
     delete-task-by-id: "DELETE FROM Task WHERE id = :id"
 
     #CREATE MASTER ROLE
-    create-role-master: "INSERT INTO Role(id,name) SELECT 1,'MASTER' WHERE NOT EXISTS (SELECT name FROM Role WHERE name = 'MASTER')"
+    create-role-master: "INSERT INTO Role(id,name) SELECT 0,'MASTER' WHERE NOT EXISTS (SELECT name FROM Role WHERE name = 'MASTER')"
     #CREATE MASTER EMPLOYEE
-    create-employee-master: "INSERT INTO Employee(username, password, role_id) SELECT 'MASTER', 'password', 1 WHERE NOT EXISTS (SELECT username FROM Employee WHERE username = 'MASTER')"
+    create-employee-master: "INSERT INTO Employee(username, password, role_id) SELECT 'MASTER', 'password', 0 WHERE NOT EXISTS (SELECT username FROM Employee WHERE username = 'MASTER')"

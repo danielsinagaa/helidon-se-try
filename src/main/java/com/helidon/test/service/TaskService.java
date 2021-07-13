@@ -1,16 +1,13 @@
 package com.helidon.test.service;
 
-import com.helidon.test.entity.model.EmployeeRequest;
 import io.helidon.dbclient.DbClient;
-import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
-import io.helidon.webserver.Service;
 
 import javax.json.JsonObject;
 import java.util.logging.Logger;
 
-public class TaskService implements Service {
+public class TaskService {
     private final DbClient dbClient;
 
     private static final Logger LOGGER = Logger.getLogger(TaskService.class.getName());
@@ -19,23 +16,12 @@ public class TaskService implements Service {
         this.dbClient = dbClient;
     }
 
-    @Override
-    public void update(Routing.Rules rules) {
-        rules
-                .get("/", this::findAll)
-                .get("/{id}", this::findById)
-                .get("/new/{task}", this::add)
-                .get("/verified/{id}", this::updateVerifiedTask)
-                .get("/finished/{id}", this::updateFinishedTask)
-                .delete("/{id}", this::deleteById);
-    }
-
-    private void findAll(ServerRequest request, ServerResponse response) {
+    public void findAll(ServerRequest request, ServerResponse response) {
         response.send(dbClient.execute(exec -> exec.namedQuery("select-all-task"))
                 .map(it -> it.as(JsonObject.class)), JsonObject.class);
     }
 
-    private void findById(ServerRequest request, ServerResponse response) {
+    public void findById(ServerRequest request, ServerResponse response) {
         try {
             int id = Integer.parseInt(request.path().param("id"));
             dbClient.execute(exec -> exec
@@ -52,7 +38,7 @@ public class TaskService implements Service {
         }
     }
 
-    private void add(ServerRequest request, ServerResponse response){
+    public void add(ServerRequest request, ServerResponse response){
 
         String task = request.path().param("task");
 
@@ -64,7 +50,7 @@ public class TaskService implements Service {
                 .exceptionally(throwable -> ServiceHandler.sendError(throwable, response, LOGGER));
     }
 
-    private void updateFinishedTask(ServerRequest request, ServerResponse response){
+    public void updateFinishedTask(ServerRequest request, ServerResponse response){
 
         try {
             int id = Integer.parseInt(request.path().param("id"));
@@ -80,7 +66,7 @@ public class TaskService implements Service {
 
     }
 
-    private void updateVerifiedTask(ServerRequest request, ServerResponse response){
+    public void updateVerifiedTask(ServerRequest request, ServerResponse response){
 
         try {
             int id = Integer.parseInt(request.path().param("id"));
@@ -96,7 +82,7 @@ public class TaskService implements Service {
 
     }
 
-    private void deleteById(ServerRequest request, ServerResponse response) {
+    public void deleteById(ServerRequest request, ServerResponse response) {
         try {
             int id = Integer.parseInt(request.path().param("id"));
             dbClient.execute(exec -> exec
