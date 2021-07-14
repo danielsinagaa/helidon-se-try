@@ -51,17 +51,17 @@ security:
     # Configuration of integration with web server
     defaults:
       authenticate: true
-#    paths:
-#      - path: "/task"
-#        roles-allowed: [ "master", "spv", "staff" ]
-#      - path: "/role"
-#        roles-allowed: [ "master", "spv", "staff" ]
-#      - path: "/task/new/**"
-#        roles-allowed: [ "master", "spv" ]
-#      - path: "/task/verified/**"
-#        roles-allowed: [ "master", "spv" ]
-#      - path: "/task/finished/**"
-#        roles-allowed: [ "master", "staff" ]
+    paths:
+      - path: "/task"
+        roles-allowed: [ "master", "spv", "staff" ]
+      - path: "/role"
+        roles-allowed: [ "master", "spv", "staff" ]
+      - path: "/task/new/{*}"
+        roles-allowed: [ "master", "spv" ]
+      - path: "/task/verified/{*}"
+        roles-allowed: [ "master", "spv" ]
+      - path: "/task/finished/{*}"
+        roles-allowed: [ "master", "staff" ]
 
 db:
   source: jdbc
@@ -101,6 +101,8 @@ db:
     find-all-employee: "SELECT Employee.id, username, password, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id ORDER BY Employee.id"
     #SELECT EMPLOYEE BY ID
     select-employee-by-id: "SELECT Employee.id, username, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id WHERE Employee.id = :id"
+    #SELECT EMPLOYEE BY ID
+    select-employee-by-login: "SELECT * FROM Employee WHERE username = :username AND password = :password"
     #INSERT NEW EMPLOYEE
     insert-employee: "INSERT INTO Employee(id, username, password, role_id) VALUES(nextval('plusid'),?,?,?)"
     #DELETE EMPLOYEE BY ID

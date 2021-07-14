@@ -84,7 +84,7 @@ public final class Main {
         return Routing.builder()
                 .register(WebSecurity.create(security(dbClient)).securityDefaults(WebSecurity.authenticate()))
                 .get("/service", WebSecurity.rolesAllowed("master","spv","staff"))
-                .get("/service-rsa", WebSecurity.rolesAllowed("master","spv","staff"))
+                .get("/2", WebSecurity.rolesAllowed("master","spv","staff"))
                 .register(health)                   // Health at "/health"
                 .register(MetricsSupport.create())  // Metrics at "/metrics"
                 .register("/role", new RoleService(dbClient))
@@ -107,16 +107,7 @@ public final class Main {
                 .delete("/task/{id}", (req, res) -> {
                     new TaskService(dbClient).deleteById(req,res);
                 }, WebSecurity.rolesAllowed("master"))
-                .get("/{*}", (req, res) -> {
-                    Optional<SecurityContext> securityContext = req.context().get(SecurityContext.class);
-                    res.headers().contentType(MediaType.TEXT_PLAIN.withCharset("UTF-8"));
-                    res.send("Response from service2, you are: \n" + securityContext
-                            .flatMap(SecurityContext::user)
-                            .map(Subject::toString)
-                            .orElse("Security context is null") + ", service: " + securityContext
-                            .flatMap(SecurityContext::service)
-                            .map(Subject::toString));
-                })
+
                 .build();
     }
 

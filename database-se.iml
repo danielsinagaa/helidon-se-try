@@ -41,20 +41,9 @@
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:3.4.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-jdk14:1.7.30" level="project" />
-    <orderEntry type="library" name="Maven: io.helidon.webserver:helidon-webserver:2.3.2" level="project" />
-    <orderEntry type="library" name="Maven: io.helidon.common:helidon-common-reactive:2.3.2" level="project" />
+    <orderEntry type="library" name="Maven: io.helidon.media:helidon-media-jsonp:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.common:helidon-common-http:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.media:helidon-media-common:2.3.2" level="project" />
-    <orderEntry type="library" name="Maven: io.helidon.common:helidon-common-key-util:2.3.2" level="project" />
-    <orderEntry type="library" name="Maven: io.opentracing:opentracing-noop:0.33.0" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-http:4.1.63.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.63.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.63.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.63.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-http2:4.1.63.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.63.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.63.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.helidon.media:helidon-media-jsonp:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.media:helidon-media-jsonb:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse:yasson:1.0.8" level="project" />
     <orderEntry type="library" name="Maven: jakarta.json.bind:jakarta.json.bind-api:1.0.2" level="project" />
@@ -66,10 +55,17 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.18.20" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.2.10" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.h2database:h2:1.4.199" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.7.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.7.0" level="project" />
+    <orderEntry type="library" name="Maven: io.helidon.webserver:helidon-webserver:2.3.2" level="project" />
+    <orderEntry type="library" name="Maven: io.helidon.common:helidon-common-reactive:2.3.2" level="project" />
+    <orderEntry type="library" name="Maven: io.helidon.common:helidon-common-key-util:2.3.2" level="project" />
+    <orderEntry type="library" name="Maven: io.opentracing:opentracing-noop:0.33.0" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-http:4.1.63.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.63.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.63.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.63.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-http2:4.1.63.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.63.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.63.Final" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.security.integration:helidon-security-integration-webserver:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.security:helidon-security:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.security.integration:helidon-security-integration-common:2.3.2" level="project" />
@@ -115,13 +111,17 @@
     <orderEntry type="library" name="Maven: io.helidon.config:helidon-config-object-mapping:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.config:helidon-config-hocon:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: com.typesafe:config:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.helidon.webclient:helidon-webclient-security:2.3.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.7.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.7.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-all:1.3" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.webclient:helidon-webclient:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.common:helidon-common-context:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.63.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-handler-proxy:4.1.63.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-codec-socks:4.1.63.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.helidon.webclient:helidon-webclient-security:2.3.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-all:1.3" level="project" />
-    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.7" level="project" />
   </component>
 </module>

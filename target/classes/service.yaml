@@ -51,9 +51,9 @@ security:
         roles-allowed: [ "master", "spv", "staff" ]
       - path: "/role"
         roles-allowed: [ "master", "spv", "staff" ]
-      - path: "/task/new/**"
+      - path: "/task/new/{*}"
         roles-allowed: [ "master", "spv" ]
-      - path: "/task/verified/**"
+      - path: "/task/verified/{*}"
         roles-allowed: [ "master", "spv" ]
-      - path: "/task/finished/**"
+      - path: "/task/finished/{*}"
         roles-allowed: [ "master", "staff" ]
