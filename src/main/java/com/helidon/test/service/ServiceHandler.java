@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 public class ServiceHandler {
 
-
     public static void sendNotFound(ServerResponse response, String message) {
         response.status(Http.Status.NOT_FOUND_404);
         response.send(message);

@@ -8,7 +8,6 @@ import com.helidon.test.entity.model.RoleRequest;
 import com.helidon.test.mapper.*;
 import io.helidon.dbclient.DbMapper;
 import io.helidon.dbclient.spi.DbMapperProvider;
-
 import javax.annotation.Priority;
 import java.util.Optional;
 
@@ -19,7 +18,6 @@ public class MapperProvider implements DbMapperProvider {
     private static final EmployeeMapper EMPLOYEE_MAPPER = new EmployeeMapper();
     private static final EmployeeRequestMapper EMPLOYEE_REQUEST_MAPPER = new EmployeeRequestMapper();
     private static final EmployeeResponseMapper EMPLOYEE_RESPONSE_MAPPER = new EmployeeResponseMapper();
-//    private static final
 
     @Override
     public <T> Optional<DbMapper<T>> mapper(Class<T> type) {

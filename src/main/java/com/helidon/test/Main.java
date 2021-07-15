@@ -2,11 +2,7 @@
 package com.helidon.test;
 
 import com.helidon.test.config.AppUser;
-import com.helidon.test.config.BasicAuthUtil;
 import com.helidon.test.config.InitializeDb;
-import com.helidon.test.entity.model.EmployeeLogin;
-import com.helidon.test.entity.model.Entity;
-import com.helidon.test.entity.model.RoleRequest;
 import com.helidon.test.service.EmployeeService;
 import com.helidon.test.service.RoleService;
 import com.helidon.test.service.TaskService;
@@ -25,26 +21,11 @@ import io.helidon.security.SecurityContext;
 import io.helidon.security.integration.webserver.WebSecurity;
 import io.helidon.security.providers.httpauth.HttpBasicAuthProvider;
 import io.helidon.security.providers.httpauth.SecureUserStore;
-import io.helidon.webclient.WebClient;
-import io.helidon.webclient.security.WebClientSecurity;
-import io.helidon.webserver.Handler;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.WebServer;
-
-import javax.json.JsonObject;
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public final class Main {
-
-    private static final WebClient CLIENT = WebClient.builder()
-            .addService(WebClientSecurity.create())
-            .build();
-
-    private static final int START_TIMEOUT_SECONDS = 10;
-
-    public static Entity ENTITY = new Entity();
 
     private Main() {
     }
@@ -85,8 +66,6 @@ public final class Main {
         Config dbConfig = config.get("db");
         DbClient dbClient = DbClient.builder(dbConfig).build();
 
-        RoleService roleService = new RoleService(dbClient);
-
         // Support for health
         HealthSupport health = HealthSupport.builder()
                 .addLiveness(DbClientHealthCheck.create(dbClient, dbConfig.get("health-check")))
@@ -94,18 +73,6 @@ public final class Main {
 
         // Initialize database schema
         InitializeDb.init(dbClient);
-
-//        Routing routing = Routing.builder()
-//                .register(buildWebSecurity(dbClient).securityDefaults(WebSecurity.authenticate()))
-//                .get("/role", WebSecurity.rolesAllowed("master", "spv", "staff"), (req, res) -> {
-//                    roleService.findAll(req, res);
-//                })
-//                .post("/role", WebSecurity.rolesAllowed("master", "spv"), (req, res) -> {
-//                    Handler.create(RoleRequest.class, roleService::add);
-//                })
-//                .build();
-//
-//        return routing;
 
         return Routing.builder()
                 .register(buildWebSecurity(dbClient).securityDefaults(WebSecurity.authenticate()))
@@ -136,13 +103,11 @@ public final class Main {
     }
 
     private static SecureUserStore buildUserStore(DbClient dbClient) {
-        Map<String, AppUser> USERS = new HashMap<>();
+        Map<String, AppUser> users = new HashMap<>();
 
-        for (EmployeeLogin employee : InitializeDb.findAllEmployee(dbClient)){
-            USERS.put(employee.getUsername(), new AppUser(employee));
-            System.out.println(employee);
-        }
+        InitializeDb.findAllEmployee(dbClient).
+                forEach(it -> users.put(it.getUsername(), new AppUser(it)));
 
-        return login -> Optional.ofNullable(USERS.get(login));
+        return login -> Optional.ofNullable(users.get(login));
     }
 }

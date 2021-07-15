@@ -1,8 +1,6 @@
 package com.helidon.test.config;
 
-import com.helidon.test.entity.Employee;
 import com.helidon.test.entity.model.EmployeeLogin;
-import io.helidon.security.providers.httpauth.HttpDigest;
 import io.helidon.security.providers.httpauth.SecureUserStore;
 
 import java.util.*;

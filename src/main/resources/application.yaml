@@ -75,6 +75,6 @@ db:
     delete-task-by-id: "DELETE FROM Task WHERE id = :id"
 
     #CREATE MASTER ROLE
-    create-role-master: "INSERT INTO Role(id,name) SELECT 0,'master' WHERE NOT EXISTS (SELECT name FROM Role WHERE name = 'master')"
+    create-role-master: "INSERT INTO Role(id,name) SELECT 99,'master' WHERE NOT EXISTS (SELECT name FROM Role WHERE name = 'master')"
     #CREATE MASTER EMPLOYEE
-    create-employee-master: "INSERT INTO Employee(username, password, role_id) SELECT 'master', 'password', 0 WHERE NOT EXISTS (SELECT username FROM Employee WHERE username = 'master')"
+    create-employee-master: "INSERT INTO Employee(username, password, role_id) SELECT 'master', 'password', 99 WHERE NOT EXISTS (SELECT username FROM Employee WHERE username = 'master')"

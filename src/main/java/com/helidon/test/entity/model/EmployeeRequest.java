@@ -9,5 +9,4 @@ public class EmployeeRequest {
     private String username;
     private String password;
     private int roleId;
-
 }

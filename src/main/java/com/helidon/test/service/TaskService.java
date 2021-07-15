@@ -1,6 +1,5 @@
 package com.helidon.test.service;
 
-import com.helidon.test.entity.model.EmployeeRequest;
 import io.helidon.dbclient.DbClient;
 import io.helidon.security.integration.webserver.WebSecurity;
 import io.helidon.webserver.Routing;

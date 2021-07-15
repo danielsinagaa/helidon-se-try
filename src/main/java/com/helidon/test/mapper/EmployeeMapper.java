@@ -1,11 +1,9 @@
 package com.helidon.test.mapper;
 
 import com.helidon.test.entity.Employee;
-import com.helidon.test.entity.Role;
 import io.helidon.dbclient.DbColumn;
 import io.helidon.dbclient.DbMapper;
 import io.helidon.dbclient.DbRow;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

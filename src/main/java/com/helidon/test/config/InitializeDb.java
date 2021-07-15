@@ -34,8 +34,7 @@ public class InitializeDb {
         }
     }
 
-    public static List<EmployeeLogin> findAllEmployee
-            (DbClient dbClient){
+    public static List<EmployeeLogin> findAllEmployee(DbClient dbClient){
         List<EmployeeLogin> employees = new ArrayList<>();
 
         dbClient.execute(exec -> exec.namedQuery("find-all-employee"))
