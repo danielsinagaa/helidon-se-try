@@ -2,11 +2,12 @@ package com.helidon.test.service;
 
 import com.helidon.test.entity.model.RoleRequest;
 import io.helidon.dbclient.DbClient;
+import io.helidon.security.integration.webserver.WebSecurity;
 import io.helidon.webserver.*;
 import javax.json.JsonObject;
 import java.util.logging.Logger;
 
-public class RoleService implements Service {
+public class RoleService implements Service{
     private final DbClient dbClient;
 
     private static final Logger LOGGER = Logger.getLogger(RoleService.class.getName());
@@ -18,19 +19,19 @@ public class RoleService implements Service {
     @Override
     public void update(Routing.Rules rules) {
         rules
-                .get("/",this::findAll)
-                .get("/{id}", this::findById)
-                .post("/", Handler.create(RoleRequest.class, this::add))
-                .delete("/{id}",this::deleteById);
+                .get("/", WebSecurity.rolesAllowed("master", "spv", "staff"), this::findAll)
+                .get("/{id}", WebSecurity.rolesAllowed("master", "spv", "staff"), this::findById)
+                .post("/", WebSecurity.rolesAllowed("master", "spv"), Handler.create(RoleRequest.class, this::add))
+                .delete("/{id}", WebSecurity.rolesAllowed("master"), this::deleteById);
 
     }
 
-    private void findAll(ServerRequest request, ServerResponse response) {
+    public void findAll(ServerRequest request, ServerResponse response) {
         response.send(dbClient.execute(exec -> exec.namedQuery("select-all-role"))
                 .map(it -> it.as(JsonObject.class)), JsonObject.class);
     }
 
-    private void findById(ServerRequest request, ServerResponse response) {
+    public void findById(ServerRequest request, ServerResponse response) {
         try {
             int id = Integer.parseInt(request.path().param("id"));
             dbClient.execute(exec -> exec
@@ -47,7 +48,7 @@ public class RoleService implements Service {
         }
     }
 
-    private void add(ServerRequest request, ServerResponse response, RoleRequest roleRequest){
+    public void add(ServerRequest request, ServerResponse response, RoleRequest roleRequest){
         dbClient.execute(exec -> exec
                 .createNamedInsert("insert-role")
                 .indexedParam(roleRequest)
@@ -56,7 +57,7 @@ public class RoleService implements Service {
                 .exceptionally(throwable -> ServiceHandler.sendError(throwable, response, LOGGER));
     }
 
-    private void deleteById(ServerRequest request, ServerResponse response) {
+    public void deleteById(ServerRequest request, ServerResponse response) {
         try {
             int id = Integer.parseInt(request.path().param("id"));
             dbClient.execute(exec -> exec

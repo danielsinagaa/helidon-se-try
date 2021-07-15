@@ -115,6 +115,7 @@
     <orderEntry type="library" name="Maven: io.helidon.config:helidon-config-object-mapping:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.config:helidon-config-hocon:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: com.typesafe:config:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.7" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.webclient:helidon-webclient:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.common:helidon-common-context:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.63.Final" level="project" />

@@ -2,6 +2,7 @@ package com.helidon.test.service;
 
 import com.helidon.test.entity.model.EmployeeRequest;
 import io.helidon.dbclient.DbClient;
+import io.helidon.security.integration.webserver.WebSecurity;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
@@ -22,12 +23,12 @@ public class TaskService implements Service {
     @Override
     public void update(Routing.Rules rules) {
         rules
-                .get("/", this::findAll)
-                .get("/{id}", this::findById)
-                .get("/new/{task}", this::add)
-                .get("/verified/{id}", this::updateVerifiedTask)
-                .get("/finished/{id}", this::updateFinishedTask)
-                .delete("/{id}", this::deleteById);
+                .get("/", WebSecurity.rolesAllowed("master", "spv", "staff"), this::findAll)
+                .get("/{id}", WebSecurity.rolesAllowed("master", "spv", "staff"), this::findById)
+                .get("/new/{task}", WebSecurity.rolesAllowed("master", "spv"), this::add)
+                .get("/verified/{id}", WebSecurity.rolesAllowed("master", "spv" ), this::updateVerifiedTask)
+                .get("/finished/{id}", WebSecurity.rolesAllowed("master", "staff"), this::updateFinishedTask)
+                .delete("/{id}", WebSecurity.rolesAllowed("master"), this::deleteById);
     }
 
     private void findAll(ServerRequest request, ServerResponse response) {

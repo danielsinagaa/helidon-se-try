@@ -2,6 +2,7 @@ package com.helidon.test.service;
 
 import com.helidon.test.entity.model.EmployeeRequest;
 import io.helidon.dbclient.DbClient;
+import io.helidon.security.integration.webserver.WebSecurity;
 import io.helidon.webserver.*;
 
 import javax.json.JsonObject;
@@ -19,10 +20,10 @@ public class EmployeeService implements Service {
     @Override
     public void update(Routing.Rules rules) {
         rules
-            .get("/", this::findAll)
-                .get("/{id}", this::findById)
-                .post("/", Handler.create(EmployeeRequest.class, this::add))
-                .delete("/{id}",this::deleteById);
+            .get("/", WebSecurity.rolesAllowed("master"), this::findAll)
+                .get("/{id}", WebSecurity.rolesAllowed("master"), this::findById)
+                .post("/", WebSecurity.rolesAllowed("master"), Handler.create(EmployeeRequest.class, this::add))
+                .delete("/{id}",WebSecurity.rolesAllowed("master"), this::deleteById);
     }
 
     private void findAll(ServerRequest request, ServerResponse response) {
