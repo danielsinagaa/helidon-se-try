@@ -2,11 +2,9 @@
 package com.helidon.test;
 
 import com.helidon.test.config.AppUser;
-import com.helidon.test.config.BasicAuthUtil;
 import com.helidon.test.config.InitializeDb;
 import com.helidon.test.entity.model.EmployeeLogin;
 import com.helidon.test.entity.model.Entity;
-import com.helidon.test.entity.model.RoleRequest;
 import com.helidon.test.service.EmployeeService;
 import com.helidon.test.service.RoleService;
 import com.helidon.test.service.TaskService;
@@ -27,14 +25,12 @@ import io.helidon.security.providers.httpauth.HttpBasicAuthProvider;
 import io.helidon.security.providers.httpauth.SecureUserStore;
 import io.helidon.webclient.WebClient;
 import io.helidon.webclient.security.WebClientSecurity;
-import io.helidon.webserver.Handler;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.WebServer;
 
-import javax.json.JsonObject;
-import java.util.*;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public final class Main {
 
@@ -94,18 +90,6 @@ public final class Main {
 
         // Initialize database schema
         InitializeDb.init(dbClient);
-
-//        Routing routing = Routing.builder()
-//                .register(buildWebSecurity(dbClient).securityDefaults(WebSecurity.authenticate()))
-//                .get("/role", WebSecurity.rolesAllowed("master", "spv", "staff"), (req, res) -> {
-//                    roleService.findAll(req, res);
-//                })
-//                .post("/role", WebSecurity.rolesAllowed("master", "spv"), (req, res) -> {
-//                    Handler.create(RoleRequest.class, roleService::add);
-//                })
-//                .build();
-//
-//        return routing;
 
         return Routing.builder()
                 .register(buildWebSecurity(dbClient).securityDefaults(WebSecurity.authenticate()))
