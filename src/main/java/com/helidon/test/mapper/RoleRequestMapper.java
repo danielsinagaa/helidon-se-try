@@ -1,6 +1,6 @@
 package com.helidon.test.mapper;
 
-import com.helidon.test.entity.model.RoleRequest;
+import com.helidon.test.dto.RoleRequest;
 import io.helidon.dbclient.DbColumn;
 import io.helidon.dbclient.DbMapper;
 import io.helidon.dbclient.DbRow;

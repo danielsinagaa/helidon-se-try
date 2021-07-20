@@ -3,20 +3,6 @@ server:
   port: 8088
   host: 0.0.0.0
 
-security:
-  config:
-    require-encryption: false
-  providers:
-    - http-basic-auth:
-        realm: "helidon"
-  web-server:
-    defaults:
-      authenticate: true
-    paths:
-      - path: "/role"
-        methods: [ "get" ]
-        roles-allowed: [ "master" ]
-
 db:
   source: jdbc
   connection:
@@ -36,9 +22,9 @@ db:
     #CREATE ROLE
     create-role: "CREATE TABLE IF NOT EXISTS Role(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL)"
     #SELECT ALL ROLES
-    select-all-role: "SELECT id, name FROM Role"
+    select-all-role: "SELECT * FROM Role"
     #SELECT ROLE BY ID
-    select-role-by-id: "SELECT id, name FROM Role WHERE id = :id"
+    select-role-by-id: "SELECT * FROM Role WHERE id = :id"
     #INSERT NEW ROLE
     insert-role: "INSERT INTO Role(name) VALUES(?)"
     #DELETE ROLE BY ID
@@ -51,6 +37,8 @@ db:
     select-all-employee: "SELECT Employee.id, username, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id ORDER BY Employee.id"
     #SELECT EMPLOYEE BY ID
     select-employee-by-id: "SELECT Employee.id, username, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id WHERE Employee.id = :id"
+    #SELECT EMPLOYEE BY USERNAME
+    select-employee-by-username: "SELECT username, password, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id WHERE Employee.username = :username"
     #INSERT NEW EMPLOYEE
     insert-employee: "INSERT INTO Employee(username, password, role_id) VALUES(?,?,?)"
     #DELETE EMPLOYEE BY ID

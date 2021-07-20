@@ -1,6 +1,6 @@
 package com.helidon.test.mapper;
 
-import com.helidon.test.entity.model.EmployeeRequest;
+import com.helidon.test.dto.EmployeeRequest;
 import io.helidon.dbclient.DbColumn;
 import io.helidon.dbclient.DbMapper;
 import io.helidon.dbclient.DbRow;

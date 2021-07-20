@@ -1,7 +1,8 @@
 package com.helidon.test.config;
 
 import com.google.gson.Gson;
-import com.helidon.test.entity.model.EmployeeLogin;
+import com.helidon.test.dto.EmployeeLogin;
+import com.helidon.test.service.ServiceHandler;
 import io.helidon.dbclient.DbClient;
 
 import javax.json.JsonObject;
@@ -34,16 +35,25 @@ public class InitializeDb {
         }
     }
 
-    public static List<EmployeeLogin> findAllEmployee(DbClient dbClient){
-        List<EmployeeLogin> employees = new ArrayList<>();
+    public static EmployeeLogin findByUsername(DbClient dbClient, String username){
+        List<EmployeeLogin> logins = new ArrayList<>();
 
-        dbClient.execute(exec -> exec.namedQuery("find-all-employee"))
-                .map(it -> it.as(JsonObject.class)).forEach(it -> {
-            EmployeeLogin employee = new Gson().fromJson(it.toString(), EmployeeLogin.class);
-            employees.add(employee);
-        }).await();
+        try {
+            dbClient.execute(exec -> exec
+                    .createNamedGet("select-employee-by-username")
+                    .addParam("username", username)
+                    .execute())
+                    .thenAccept(maybeRow -> maybeRow
+                            .ifPresentOrElse(
+                                    row -> {
+                                        logins.add(new Gson().fromJson(row.as(JsonObject.class).toString(), EmployeeLogin.class));
+                                    },
+                                    () -> logins.add(new EmployeeLogin())))
+                    .exceptionally(throwable -> ServiceHandler.sendError(throwable)).await();
+        } catch (NumberFormatException ex) {
+        }
 
-        return employees;
+        return logins.get(0);
     }
 
     private InitializeDb() {

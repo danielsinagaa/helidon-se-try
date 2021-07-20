@@ -11,6 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.json:json:20210307" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.health:helidon-health:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: io.helidon.fault-tolerance:helidon-fault-tolerance:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.microprofile.health:microprofile-health-api:2.2" level="project" />

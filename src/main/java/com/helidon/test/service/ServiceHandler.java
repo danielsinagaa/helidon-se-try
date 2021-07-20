@@ -29,4 +29,12 @@ public class ServiceHandler {
         LOGGER.log(Level.WARNING, "Failed to process request", throwable);
         return null;
     }
+
+    public static <T> T sendError(Throwable throwable) {
+        Throwable realCause = throwable;
+        if (throwable instanceof CompletionException) {
+            realCause = throwable.getCause();
+        }
+        return null;
+    }
 }
