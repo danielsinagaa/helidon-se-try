@@ -17,13 +17,10 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 
+import static com.helidon.test.Main.dbClient;
+
 public class LoginService {
     private final JwkKeys keySet = JwkKeys.builder().resource(Resource.create(Paths.get("conf/jwks.json"))).build();
-    private final DbClient dbClient;
-
-    public LoginService(DbClient dbClient) {
-        this.dbClient = dbClient;
-    }
 
     public void login(ServerRequest req, ServerResponse res, Login loginReq){
 

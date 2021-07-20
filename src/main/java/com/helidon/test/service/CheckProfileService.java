@@ -5,7 +5,6 @@ import io.helidon.security.Role;
 import io.helidon.security.SecurityContext;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
-
 import java.util.HashMap;
 
 public class CheckProfileService {

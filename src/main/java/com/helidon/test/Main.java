@@ -27,6 +27,9 @@ import java.nio.file.Paths;
 
 public final class Main {
 
+    public static final Config dbConfig = Config.create().get("db");
+    public static final DbClient dbClient = DbClient.builder(dbConfig).build();
+
     public static void main(final String[] args) {
         startServer();
     }
@@ -34,7 +37,7 @@ public final class Main {
     static Single<WebServer> startServer() {
         LogConfig.configureRuntime();
 
-        Routing routing = createRouting(Config.create());
+        Routing routing = createRouting();
         WebServer server = WebServer.builder(routing)
                 .addMediaSupport(JsonpSupport.create())
                 .addMediaSupport(JsonbSupport.create())
@@ -55,9 +58,7 @@ public final class Main {
         return webserver;
     }
 
-    private static Routing createRouting(Config config) {
-        Config dbConfig = config.get("db");
-        DbClient dbClient = DbClient.builder(dbConfig).build();
+    private static Routing createRouting() {
 
         // Support for health
         HealthSupport health = HealthSupport.builder()
@@ -74,26 +75,26 @@ public final class Main {
                 .addProvider(provider)
                 .build();
 
-        LoginService loginService = new LoginService(dbClient);
+        LoginService loginService = new LoginService();
         CheckProfileService checkProfileService = new CheckProfileService();
 
-        FindAllEmployeeService findAllEmployeeService = new FindAllEmployeeService(dbClient);
-        FindAllRoleService findAllRoleService = new FindAllRoleService(dbClient);
-        FindAllTaskService findAllTaskService = new FindAllTaskService(dbClient);
+        FindAllEmployeeService findAllEmployeeService = new FindAllEmployeeService();
+        FindAllRoleService findAllRoleService = new FindAllRoleService();
+        FindAllTaskService findAllTaskService = new FindAllTaskService();
 
-        FindByIdEmployeeService findByIdEmployeeService = new FindByIdEmployeeService(dbClient);
-        FindByIdRoleService findByIdRoleService = new FindByIdRoleService(dbClient);
-        FindByIdTaskService findByIdTaskService = new FindByIdTaskService(dbClient);
+        FindByIdEmployeeService findByIdEmployeeService = new FindByIdEmployeeService();
+        FindByIdRoleService findByIdRoleService = new FindByIdRoleService();
+        FindByIdTaskService findByIdTaskService = new FindByIdTaskService();
 
-        PostEmployeeService postEmployeeService = new PostEmployeeService(dbClient);
-        PostRoleService postRoleService = new PostRoleService(dbClient);
-        PostTaskService postTaskService = new PostTaskService(dbClient);
+        PostEmployeeService postEmployeeService = new PostEmployeeService();
+        PostRoleService postRoleService = new PostRoleService();
+        PostTaskService postTaskService = new PostTaskService();
 
-        DeleteByIdEmployeeService deleteByIdEmployeeService = new DeleteByIdEmployeeService(dbClient);
-        DeleteByIdRoleService deleteByIdRoleService = new DeleteByIdRoleService(dbClient);
-        DeleteByIdTaskService deleteByIdTaskService = new DeleteByIdTaskService(dbClient);
+        DeleteByIdEmployeeService deleteByIdEmployeeService = new DeleteByIdEmployeeService();
+        DeleteByIdRoleService deleteByIdRoleService = new DeleteByIdRoleService();
+        DeleteByIdTaskService deleteByIdTaskService = new DeleteByIdTaskService();
 
-        UpdateTaskService updateTaskService = new UpdateTaskService(dbClient);
+        UpdateTaskService updateTaskService = new UpdateTaskService();
 
         return Routing.builder()
                 .register(WebSecurity.create(security))

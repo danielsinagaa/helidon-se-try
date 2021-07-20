@@ -1,18 +1,12 @@
 package com.helidon.test.service;
 
-import io.helidon.dbclient.DbClient;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
-
 import java.util.logging.Logger;
+import static com.helidon.test.Main.dbClient;
 
 public class DeleteByIdRoleService {
     private static final Logger LOGGER = Logger.getLogger(DeleteByIdRoleService.class.getName());
-    private final DbClient dbClient;
-
-    public DeleteByIdRoleService(DbClient dbClient) {
-        this.dbClient = dbClient;
-    }
 
     public void deleteById(ServerRequest request, ServerResponse response) {
         try {
