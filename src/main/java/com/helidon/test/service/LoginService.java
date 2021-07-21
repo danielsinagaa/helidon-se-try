@@ -6,7 +6,6 @@ import com.helidon.test.dto.Login;
 import com.helidon.test.dto.LoginData;
 import io.helidon.common.configurable.Resource;
 import io.helidon.common.http.Http;
-import io.helidon.dbclient.DbClient;
 import io.helidon.security.jwt.Jwt;
 import io.helidon.security.jwt.SignedJwt;
 import io.helidon.security.jwt.jwk.JwkKeys;
@@ -17,17 +16,15 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 
-import static com.helidon.test.Main.dbClient;
-
 public class LoginService {
-    private final JwkKeys keySet = JwkKeys.builder().resource(Resource.create(Paths.get("conf/jwks.json"))).build();
 
-    public void login(ServerRequest req, ServerResponse res, Login loginReq){
+    public static void login(ServerRequest req, ServerResponse res, Login loginReq){
+        JwkKeys keySet = JwkKeys.builder().resource(Resource.create(Paths.get("conf/jwks.json"))).build();
 
-        EmployeeLogin data = InitializeDb.findByUsername(dbClient, loginReq.getUsername());
+        EmployeeLogin data = InitializeDb.findByUsername(loginReq.getUsername());
         Jwt.Builder jwt;
 
-        if (verifyLogin(loginReq, dbClient)){
+        if (verifyLogin(loginReq)){
             jwt = Jwt
                     .builder()
                     .keyId("blog-app")
@@ -47,8 +44,8 @@ public class LoginService {
         }
     }
 
-    private static Boolean verifyLogin(Login login, DbClient dbClient){
-        EmployeeLogin data = InitializeDb.findByUsername(dbClient, login.getUsername());
+    private static Boolean verifyLogin(Login login){
+        EmployeeLogin data = InitializeDb.findByUsername(login.getUsername());
 
         if (!data.getUsername().equals(login.getUsername()) || !data.getPassword().equals(login.getPassword())){
             return false;

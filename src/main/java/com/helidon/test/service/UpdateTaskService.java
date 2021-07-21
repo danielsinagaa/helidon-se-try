@@ -9,7 +9,7 @@ public class UpdateTaskService {
 
     private static final Logger LOGGER = Logger.getLogger(UpdateTaskService.class.getName());
 
-    public void updateFinishedTask(ServerRequest request, ServerResponse response){
+    public static void updateFinishedTask(ServerRequest request, ServerResponse response){
         try {
             int id = Integer.parseInt(request.path().param("id"));
             dbClient.execute(exec -> exec
@@ -23,7 +23,7 @@ public class UpdateTaskService {
         }
     }
 
-    public void updateVerifiedTask(ServerRequest request, ServerResponse response){
+    public static void updateVerifiedTask(ServerRequest request, ServerResponse response){
         try {
             int id = Integer.parseInt(request.path().param("id"));
             dbClient.execute(exec -> exec

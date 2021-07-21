@@ -3,15 +3,15 @@ package com.helidon.test.config;
 import com.google.gson.Gson;
 import com.helidon.test.dto.EmployeeLogin;
 import com.helidon.test.service.ServiceHandler;
-import io.helidon.dbclient.DbClient;
-
 import javax.json.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.helidon.test.Main.dbClient;
+
 public class InitializeDb {
 
-    public static void init(DbClient dbClient){
+    public static void init(){
         try {
             dbClient.execute(
                     exec -> exec
@@ -35,7 +35,7 @@ public class InitializeDb {
         }
     }
 
-    public static EmployeeLogin findByUsername(DbClient dbClient, String username){
+    public static EmployeeLogin findByUsername(String username){
         List<EmployeeLogin> logins = new ArrayList<>();
 
         try {

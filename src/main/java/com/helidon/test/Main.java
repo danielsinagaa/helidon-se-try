@@ -66,7 +66,7 @@ public final class Main {
                 .build();
 
         // Initialize database schema
-        InitializeDb.init(dbClient);
+        InitializeDb.init();
 
         JwtProvider provider = JwtProvider.builder()
                 .verifyJwk(Resource.create(Paths.get("conf/jwks.json")))
@@ -75,53 +75,32 @@ public final class Main {
                 .addProvider(provider)
                 .build();
 
-        LoginService loginService = new LoginService();
-        CheckProfileService checkProfileService = new CheckProfileService();
-
-        FindAllEmployeeService findAllEmployeeService = new FindAllEmployeeService();
-        FindAllRoleService findAllRoleService = new FindAllRoleService();
-        FindAllTaskService findAllTaskService = new FindAllTaskService();
-
-        FindByIdEmployeeService findByIdEmployeeService = new FindByIdEmployeeService();
-        FindByIdRoleService findByIdRoleService = new FindByIdRoleService();
-        FindByIdTaskService findByIdTaskService = new FindByIdTaskService();
-
-        PostEmployeeService postEmployeeService = new PostEmployeeService();
-        PostRoleService postRoleService = new PostRoleService();
-        PostTaskService postTaskService = new PostTaskService();
-
-        DeleteByIdEmployeeService deleteByIdEmployeeService = new DeleteByIdEmployeeService();
-        DeleteByIdRoleService deleteByIdRoleService = new DeleteByIdRoleService();
-        DeleteByIdTaskService deleteByIdTaskService = new DeleteByIdTaskService();
-
-        UpdateTaskService updateTaskService = new UpdateTaskService();
-
         return Routing.builder()
                 .register(WebSecurity.create(security))
                 .register(health)                   // Health at "/health"
                 .register(MetricsSupport.create())  // Metrics at "/metrics"
                 //POST WITH REQUEST BODY WITH LAMBDA
                 .get("/login", Handler.create(Login.class, (req, res, loginReq) ->
-                        loginService.login(req, res, loginReq)))
+                        LoginService.login(req, res, loginReq)))
                 //GET WITH LAMBDA
                 .get("/profile", WebSecurity.authenticate().rolesAllowed("master","spv", "staff"),
-                        (req, res) -> checkProfileService.checkProfile(req, res))
+                        (req, res) -> CheckProfileService.checkProfile(req, res))
                 //GET WITH METHOD REFERENCE
-                .get("/employee", WebSecurity.rolesAllowed("master", "spv"), findAllEmployeeService::findAll)
-                .get("/employee/{id}", WebSecurity.rolesAllowed("master", "spv"), findByIdEmployeeService::findById)
+                .get("/employee", WebSecurity.rolesAllowed("master", "spv"), FindAllEmployeeService::findAll)
+                .get("/employee/{id}", WebSecurity.rolesAllowed("master", "spv"), FindByIdEmployeeService::findById)
                 //POST WITH REQUEST BODY WITH METHOD REFERENCE
-                .post("/employee", WebSecurity.rolesAllowed("master", "spv", "staff"),Handler.create(EmployeeRequest.class,postEmployeeService::post))
-                .delete("/employee/{id}", WebSecurity.rolesAllowed("master"), deleteByIdEmployeeService::deleteById)
-                .get("/role", WebSecurity.rolesAllowed("master"), findAllRoleService::findAll)
-                .get("/role/{id}", WebSecurity.rolesAllowed("master"), findByIdRoleService::findById)
-                .post("/role", WebSecurity.rolesAllowed("master"), Handler.create(RoleRequest.class, postRoleService::post))
-                .delete("/role/{id}",  WebSecurity.rolesAllowed("master"), deleteByIdRoleService::deleteById)
-                .get("/task", WebSecurity.rolesAllowed("master", "spv", "staff"), findAllTaskService::findAll)
-                .get("/task/{id}", WebSecurity.rolesAllowed("master", "spv", "staff"), findByIdTaskService::findById)
-                .get("/task/new/{task}", WebSecurity.rolesAllowed("master", "spv"), postTaskService::post)
-                .get("/task/verified/{id}", WebSecurity.rolesAllowed("master", "spv" ), updateTaskService::updateVerifiedTask)
-                .get("/task/finished/{id}", WebSecurity.rolesAllowed("master", "staff"), updateTaskService::updateFinishedTask)
-                .delete("/task/{id}", WebSecurity.rolesAllowed("master"), deleteByIdTaskService::deleteById)
+                .post("/employee", WebSecurity.rolesAllowed("master", "spv", "staff"),Handler.create(EmployeeRequest.class,PostEmployeeService::post))
+                .delete("/employee/{id}", WebSecurity.rolesAllowed("master"), DeleteByIdEmployeeService::deleteById)
+                .get("/role", WebSecurity.rolesAllowed("master"), FindAllRoleService::findAll)
+                .get("/role/{id}", WebSecurity.rolesAllowed("master"), FindByIdRoleService::findById)
+                .post("/role", WebSecurity.rolesAllowed("master"), Handler.create(RoleRequest.class, PostRoleService::post))
+                .delete("/role/{id}",  WebSecurity.rolesAllowed("master"), DeleteByIdRoleService::deleteById)
+                .get("/task", WebSecurity.rolesAllowed("master", "spv", "staff"), FindAllTaskService::findAll)
+                .get("/task/{id}", WebSecurity.rolesAllowed("master", "spv", "staff"), FindByIdTaskService::findById)
+                .get("/task/new/{task}", WebSecurity.rolesAllowed("master", "spv"), PostTaskService::post)
+                .get("/task/verified/{id}", WebSecurity.rolesAllowed("master", "spv" ), UpdateTaskService::updateVerifiedTask)
+                .get("/task/finished/{id}", WebSecurity.rolesAllowed("master", "staff"), UpdateTaskService::updateFinishedTask)
+                .delete("/task/{id}", WebSecurity.rolesAllowed("master"), DeleteByIdTaskService::deleteById)
                 .build();
     }
 

@@ -8,7 +8,7 @@ import static com.helidon.test.Main.dbClient;
 
 public class FindAllRoleService {
 
-    public void findAll(ServerRequest request, ServerResponse response) {
+    public static void findAll(ServerRequest request, ServerResponse response) {
         List<JsonObject> json = dbClient.execute(exec -> exec.namedQuery("select-all-role"))
                 .map(it -> it.as(JsonObject.class)).collectList().await();
 

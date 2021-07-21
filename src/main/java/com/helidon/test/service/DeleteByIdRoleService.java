@@ -8,7 +8,7 @@ import static com.helidon.test.Main.dbClient;
 public class DeleteByIdRoleService {
     private static final Logger LOGGER = Logger.getLogger(DeleteByIdRoleService.class.getName());
 
-    public void deleteById(ServerRequest request, ServerResponse response) {
+    public static void deleteById(ServerRequest request, ServerResponse response) {
         try {
             int id = Integer.parseInt(request.path().param("id"));
             dbClient.execute(exec -> exec

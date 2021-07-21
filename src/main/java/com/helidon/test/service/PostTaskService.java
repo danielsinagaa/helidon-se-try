@@ -8,7 +8,7 @@ import static com.helidon.test.Main.dbClient;
 public class PostTaskService {
     private static final Logger LOGGER = Logger.getLogger(PostTaskService.class.getName());
 
-    public void post(ServerRequest request, ServerResponse response){
+    public static void post(ServerRequest request, ServerResponse response){
 
         String task = request.path().param("task");
 
