@@ -3,7 +3,7 @@ package com.helidon.test.service;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import java.util.logging.Logger;
-import static com.helidon.test.Main.dbClient;
+import static com.helidon.test.Main.employeeDB;
 
 public class DeleteByIdEmployeeService {
     private static final Logger LOGGER = Logger.getLogger(DeleteByIdEmployeeService.class.getName());
@@ -11,7 +11,7 @@ public class DeleteByIdEmployeeService {
     public static void deleteById(ServerRequest request, ServerResponse response) {
         try {
             int id = Integer.parseInt(request.path().param("id"));
-            dbClient.execute(exec -> exec
+            employeeDB.execute(exec -> exec
                     .createNamedDelete("delete-employee-by-id")
                     .addParam("id", id)
                     .execute())

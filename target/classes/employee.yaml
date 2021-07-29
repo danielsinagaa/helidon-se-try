@@ -1,0 +1,31 @@
+
+query:
+  source: jdbc
+  connection:
+    url: jdbc:postgresql://localhost:5432/helidontest
+    username: postgres
+    password: admin
+    poolName: employee
+  services:
+    metrics:
+      - type: METER
+  health-check:
+    type: "dml"
+    statementName: "ping"
+  statements:
+    #SELECT ALL EMPLOYEES
+    select-all-employee: "SELECT Employee.id, username, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id ORDER BY Employee.id"
+    #SELECT EMPLOYEE BY ID
+    select-employee-by-id: "SELECT Employee.id, username, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id WHERE Employee.id = :id"
+    #SELECT EMPLOYEE BY USERNAME
+    select-employee-by-username: "SELECT username, password, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id WHERE Employee.username = :username"
+    #INSERT NEW EMPLOYEE
+    insert-employee: "INSERT INTO Employee(username, password, role_id) VALUES(?,?,?)"
+    #DELETE EMPLOYEE BY ID
+    delete-employee-by-id: "DELETE FROM Employee WHERE id = :id"
+    #DELETE ALL EMPLOYEE
+    delete-employee: "DELETE FROM Employee"
+    #SELECT ALL EMPLOYEES
+    find-all-employee: "SELECT Employee.id, username, password, Role.name as role FROM Employee INNER JOIN Role ON Employee.role_id = Role.id ORDER BY Employee.id"
+    #CREATE MASTER EMPLOYEE
+    create-employee-master: "INSERT INTO Employee(username, password, role_id) SELECT 'master', 'password', 99 WHERE NOT EXISTS (SELECT username FROM Employee WHERE username = 'master')"

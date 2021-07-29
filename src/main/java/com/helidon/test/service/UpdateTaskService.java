@@ -3,7 +3,7 @@ package com.helidon.test.service;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import java.util.logging.Logger;
-import static com.helidon.test.Main.dbClient;
+import static com.helidon.test.Main.taskDB;
 
 public class UpdateTaskService {
 
@@ -12,7 +12,7 @@ public class UpdateTaskService {
     public static void updateFinishedTask(ServerRequest request, ServerResponse response){
         try {
             int id = Integer.parseInt(request.path().param("id"));
-            dbClient.execute(exec -> exec
+            taskDB.execute(exec -> exec
                     .createNamedDelete("update-finished-task")
                     .addParam("id", id)
                     .execute())
@@ -26,7 +26,7 @@ public class UpdateTaskService {
     public static void updateVerifiedTask(ServerRequest request, ServerResponse response){
         try {
             int id = Integer.parseInt(request.path().param("id"));
-            dbClient.execute(exec -> exec
+            taskDB.execute(exec -> exec
                     .createNamedDelete("update-verified-task")
                     .addParam("id", id)
                     .execute())

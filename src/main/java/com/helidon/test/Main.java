@@ -16,6 +16,7 @@ import io.helidon.health.HealthSupport;
 import io.helidon.media.jsonb.JsonbSupport;
 import io.helidon.media.jsonp.JsonpSupport;
 import io.helidon.metrics.MetricsSupport;
+import io.helidon.openapi.OpenAPISupport;
 import io.helidon.security.Security;
 import io.helidon.security.integration.webserver.WebSecurity;
 import io.helidon.security.providers.jwt.JwtProvider;
@@ -27,8 +28,16 @@ import java.nio.file.Paths;
 
 public final class Main {
 
+    private static final String EMPLOYEE_YAML = "employee.yaml";
+    private static final String ROLE_YAML = "role.yaml";
+    private static final String TASK_YAML = "task.yaml";
+
     public static final Config dbConfig = Config.create().get("db");
     public static final DbClient dbClient = DbClient.builder(dbConfig).build();
+
+    public static final DbClient employeeDB = InitializeDb.dbInit(EMPLOYEE_YAML);
+    public static final DbClient roleDB = InitializeDb.dbInit(ROLE_YAML);
+    public static final DbClient taskDB = InitializeDb.dbInit(TASK_YAML);
 
     public static void main(final String[] args) {
         startServer();
@@ -76,6 +85,7 @@ public final class Main {
                 .build();
 
         return Routing.builder()
+                .register(OpenAPISupport.create(Config.create()))
                 .register(WebSecurity.create(security))
                 .register(health)                   // Health at "/health"
                 .register(MetricsSupport.create())  // Metrics at "/metrics"

@@ -1,0 +1,27 @@
+
+query:
+  source: jdbc
+  connection:
+    url: jdbc:postgresql://localhost:5432/helidontest
+    username: postgres
+    password: admin
+    poolName: role
+  services:
+    metrics:
+      - type: METER
+  health-check:
+    type: "dml"
+    statementName: "ping"
+  statements:
+    #SELECT ALL ROLES
+    select-all-role: "SELECT * FROM Role"
+    #SELECT ROLE BY ID
+    select-role-by-id: "SELECT * FROM Role WHERE id = :id"
+    #INSERT NEW ROLE
+    insert-role: "INSERT INTO Role(name) VALUES(?)"
+    #DELETE ROLE BY ID
+    delete-role-by-id: "DELETE FROM Role WHERE id = :id"
+    #DELETE ALL ROLE
+    delete-role: "DELETE FROM Role"
+    #CREATE MASTER ROLE
+    create-role-master: "INSERT INTO Role(id,name) SELECT 99,'master' WHERE NOT EXISTS (SELECT name FROM Role WHERE name = 'master')"

@@ -38,22 +38,7 @@ security:
     # Security provider - basic authentication (supports roles)
     - http-basic-auth:
         realm: "helidon"
-        users:
-          - login: "jack"
-            password: "${CLEAR=password}"
-            roles: [ "user", "admin" ]
-          - login: "jill"
-            password: "${CLEAR=password}"
-            roles: [ "user" ]
-          - login: "john"
-            password: "${CLEAR=password}"
-            roles: []
   web-server:
     # Configuration of integration with web server
     defaults:
       authenticate: true
-    paths:
-      - path: "/service2"
-        roles-allowed: [ "user" ]
-      - path: "/service2-rsa"
-        roles-allowed: [ "user" ]

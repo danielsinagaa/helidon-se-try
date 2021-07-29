@@ -1,0 +1,27 @@
+
+query:
+  source: jdbc
+  connection:
+    url: jdbc:postgresql://localhost:5432/helidontest
+    username: postgres
+    password: admin
+    poolName: task
+  services:
+    metrics:
+      - type: METER
+  health-check:
+    type: "dml"
+    statementName: "ping"
+  statements:
+    #SELECT ALL TASK
+    select-all-task: "SELECT id, task_name, finished, verified FROM Task"
+    #INSERT NEW TASK
+    insert-new-task: "INSERT INTO Task(task_name) VALUES (:task)"
+    #SELECT TASK BY ID
+    select-task-by-id: "SELECT id, task_name, finished, verified FROM Task WHERE id = :id"
+    #UPDATE FINISHED TASK
+    update-finished-task: "UPDATE Task SET finished = true WHERE id = :id"
+    #UPDATE VERIFIED TASK
+    update-verified-task: "UPDATE Task SET verified = true WHERE id = :id"
+    #DELETE TASK BY ID
+    delete-task-by-id: "DELETE FROM Task WHERE id = :id"

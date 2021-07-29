@@ -3,7 +3,7 @@ package com.helidon.test.service;
 import com.helidon.test.config.InitializeDb;
 import com.helidon.test.dto.EmployeeLogin;
 import com.helidon.test.dto.Login;
-import com.helidon.test.dto.LoginData;
+import com.helidon.test.dto.LoginResponse;
 import io.helidon.common.configurable.Resource;
 import io.helidon.common.http.Http;
 import io.helidon.security.jwt.Jwt;
@@ -36,7 +36,7 @@ public class LoginService {
 
             SignedJwt signed = SignedJwt.sign(jwt.build(), keySet);
 
-            LoginData loginData = new LoginData(data, signed.tokenContent());
+            LoginResponse loginData = new LoginResponse(data, signed.tokenContent());
             res.status(Http.Status.OK_200).send(loginData);
         } else {
             res.status(Http.Status.UNAUTHORIZED_401);
