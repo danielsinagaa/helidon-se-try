@@ -8,7 +8,7 @@ import static com.helidon.test.Main.employeeDB;
 
 public class PostEmployeeService {
     private static final Logger LOGGER = Logger.getLogger(PostEmployeeService.class.getName());
-    public static void post(ServerRequest request, ServerResponse response, EmployeeRequest employeeRequest){
+    public static void execute(ServerRequest request, ServerResponse response, EmployeeRequest employeeRequest){
         employeeDB.execute(exec -> exec
                 .createNamedInsert("insert-employee")
                 .indexedParam(employeeRequest)

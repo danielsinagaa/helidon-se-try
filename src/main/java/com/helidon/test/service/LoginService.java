@@ -1,6 +1,5 @@
 package com.helidon.test.service;
 
-import com.helidon.test.config.InitializeDb;
 import com.helidon.test.dto.EmployeeLogin;
 import com.helidon.test.dto.Login;
 import com.helidon.test.dto.LoginResponse;
@@ -18,10 +17,10 @@ import java.time.Instant;
 
 public class LoginService {
 
-    public static void login(ServerRequest req, ServerResponse res, Login loginReq){
+    public static void execute(ServerRequest req, ServerResponse res, Login loginReq){
         JwkKeys keySet = JwkKeys.builder().resource(Resource.create(Paths.get("conf/jwks.json"))).build();
 
-        EmployeeLogin data = InitializeDb.findByUsername(loginReq.getUsername());
+        EmployeeLogin data = FindEmployeeByUsername.execute(loginReq.getUsername());
         Jwt.Builder jwt;
 
         if (verifyLogin(loginReq)){
@@ -45,7 +44,7 @@ public class LoginService {
     }
 
     private static Boolean verifyLogin(Login login){
-        EmployeeLogin data = InitializeDb.findByUsername(login.getUsername());
+        EmployeeLogin data = FindEmployeeByUsername.execute(login.getUsername());
 
         if (!data.getUsername().equals(login.getUsername()) || !data.getPassword().equals(login.getPassword())){
             return false;

@@ -9,7 +9,7 @@ public class FindByIdRoleService {
 
     private static final Logger LOGGER = Logger.getLogger(FindByIdRoleService.class.getName());
 
-    public static void findById(ServerRequest request, ServerResponse response) {
+    public static void execute(ServerRequest request, ServerResponse response) {
         try {
             int id = Integer.parseInt(request.path().param("id"));
             roleDB.execute(exec -> exec

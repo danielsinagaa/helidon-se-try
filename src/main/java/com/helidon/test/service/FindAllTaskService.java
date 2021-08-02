@@ -8,7 +8,7 @@ import static com.helidon.test.Main.taskDB;
 
 public class FindAllTaskService {
 
-    public static void findAll(ServerRequest request, ServerResponse response) {
+    public static void execute(ServerRequest request, ServerResponse response) {
         List<JsonObject> json = taskDB.execute(exec -> exec.namedQuery("select-all-task"))
                 .map(it -> it.as(JsonObject.class)).collectList().await();
 

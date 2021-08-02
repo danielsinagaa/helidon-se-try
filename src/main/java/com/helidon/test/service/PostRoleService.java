@@ -9,7 +9,7 @@ import static com.helidon.test.Main.roleDB;
 public class PostRoleService {
     private static final Logger LOGGER = Logger.getLogger(PostRoleService.class.getName());
 
-    public static void post(ServerRequest request, ServerResponse response, RoleRequest roleRequest){
+    public static void execute(ServerRequest request, ServerResponse response, RoleRequest roleRequest){
         roleDB.execute(exec -> exec
                 .createNamedInsert("insert-role")
                 .indexedParam(roleRequest)

@@ -8,7 +8,7 @@ import static com.helidon.test.Main.employeeDB;
 public class FindByIdEmployeeService {
     private static final Logger LOGGER = Logger.getLogger(FindByIdEmployeeService.class.getName());
 
-    public static void findById(ServerRequest request, ServerResponse response) {
+    public static void execute(ServerRequest request, ServerResponse response) {
         try {
             int id = Integer.parseInt(request.path().param("id"));
             employeeDB.execute(exec -> exec

@@ -8,7 +8,7 @@ import static com.helidon.test.Main.employeeDB;
 
 public class FindAllEmployeeService {
 
-    public static void findAll(ServerRequest request, ServerResponse response) {
+    public static void execute(ServerRequest request, ServerResponse response) {
         List<JsonObject> json = employeeDB.execute(exec -> exec.namedQuery("select-all-employee"))
                 .map(it -> it.as(JsonObject.class)).collectList().await();
 

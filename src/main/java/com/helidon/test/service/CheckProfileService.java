@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class CheckProfileService {
 
-    public static void checkProfile(ServerRequest req, ServerResponse res){
+    public static void execute(ServerRequest req, ServerResponse res){
         req.context().get(SecurityContext.class).ifPresentOrElse(
                 ctx -> ctx.atnClientBuilder().submit().whenComplete((result, error) -> {
                     if (error != null) {

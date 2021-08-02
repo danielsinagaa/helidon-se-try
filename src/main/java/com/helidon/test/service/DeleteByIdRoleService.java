@@ -8,7 +8,7 @@ import static com.helidon.test.Main.roleDB;
 public class DeleteByIdRoleService {
     private static final Logger LOGGER = Logger.getLogger(DeleteByIdRoleService.class.getName());
 
-    public static void deleteById(ServerRequest request, ServerResponse response) {
+    public static void execute(ServerRequest request, ServerResponse response) {
         try {
             int id = Integer.parseInt(request.path().param("id"));
             roleDB.execute(exec -> exec
